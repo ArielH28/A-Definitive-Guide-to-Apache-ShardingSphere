@@ -1,0 +1,82 @@
+YAML
+schemaName: sbtest
+dataSources:
+ds_0:
+url: jdbc:mysql://ip1:3306/sbtest
+username: root
+password: 123456
+connectionTimeoutMilliseconds: 10000
+idleTimeoutMilliseconds: 60000
+maxLifetimeMilliseconds: 1800000
+maxPoolSize: 3000
+minPoolSize: 1
+ds_1:
+url: jdbc:mysql://ip2:3306/sbtest
+username: root
+password: 123456
+connectionTimeoutMilliseconds: 10000
+idleTimeoutMilliseconds: 60000
+maxLifetimeMilliseconds: 1800000
+maxPoolSize: 3000
+minPoolSize: 1
+ds_2:
+url: jdbc:mysql://ip3:3306/sbtest
+username: root
+password: 123456
+connectionTimeoutMilliseconds: 10000
+idleTimeoutMilliseconds: 60000
+maxLifetimeMilliseconds: 1800000
+maxPoolSize: 3000
+minPoolSize: 1
+ds_3:
+url: jdbc:mysql://ip4:3306/sbtest
+username: root
+password: 123456
+connectionTimeoutMilliseconds: 10000
+idleTimeoutMilliseconds: 60000
+maxLifetimeMilliseconds: 1800000
+maxPoolSize: 3000
+minPoolSize: 1
+ds_4:
+url: jdbc:mysql://ip5:3306/sbtest
+username: root
+password: 123456
+connectionTimeoutMilliseconds: 10000
+idleTimeoutMilliseconds: 60000
+maxLifetimeMilliseconds: 1800000
+maxPoolSize: 3000
+minPoolSize: 1
+
+rules:
+- !SHARDING
+tables:
+sbtest1:
+actualDataNodes: ds_${0..4}.sbtest1_${0..9}
+tableStrategy:
+standard:
+shardingColumn: id
+shardingAlgorithmName: table_inline_1
+keyGenerateStrategy:
+column: id
+keyGeneratorName: snowflake
+
+defaultDatabaseStrategy:
+standard:
+shardingColumn: id
+shardingAlgorithmName: database_inline
+
+shardingAlgorithms:
+database_inline:
+type: INLINE
+props:
+algorithm-expression: ds_${id % 5}
+table_inline_1:
+type: INLINE
+props:
+algorithm-expression: sbtest1_${id % 10}
+keyGenerators:
+snowflake:
+type: SNOWFLAKE
+props:
+worker-id: 123
+
